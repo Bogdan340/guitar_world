@@ -1,0 +1,75 @@
+{% extends '../layout.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block styles %}
+<style>
+    .content{
+        display: flex;
+    }
+    .img-product{
+        width: 17vw;
+        height: 80vh;
+        background-size: cover;
+        border-radius: .8vw;
+        background-position-x: 50%;
+        margin-top: 5vh;
+    }
+
+    .img-product-wrapper{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+    }
+
+    .text-content{
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-left: 2vw;
+        padding-right: 2vw;
+        row-gap: 2vh;
+    }
+    .name-product{
+        text-align: left;
+        width: 100%;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-size: 2.5rem;
+    }
+
+    .name-description{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-size: 1rem;
+        line-height: 2;
+        text-align: left;
+        color: #000000;
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<script>
+    function addInCart(id){
+        fetch(`http://${location.host}/catalog/addincart?product=${id}`)
+    }
+</script>
+<div class="content">
+    <div class="img-product-wrapper">
+        <div class="img-product" style="background-image: url('/media/{{ product.image }}');"></div>
+    </div>
+    <div class="text-content">
+        <h1 class="name-product">{{ product.name }}</h1>
+        <h1 class="name-product" style="font-size: 1.9rem;">{{ product.price }} руб.</h1>
+        <p class="name-description">{{ product.description }}</p>
+        <div style="display: flex;column-gap: 3vw;">
+            <button onclick="addInCart('{{ product.id }}')" class="header__button-login" style="width: fit-content;height: fit-content;padding: .3vw;">Добавить в корзину</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

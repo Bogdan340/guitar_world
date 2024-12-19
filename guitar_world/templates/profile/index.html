@@ -1,0 +1,217 @@
+{% extends '../layout.html' %}
+{% block title %}Профиль{% endblock %}
+{% block styles %}
+<style>
+    .content{
+        padding-top: 9vh;
+        padding-left: 10vw;
+        width: 100%;
+        height: 92.3%;
+        display: flex;
+    }
+    .content__title{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 2.5rem;
+    }
+    .inp{
+        outline: 0;
+        border: 0;
+        background-color: #F5F2F0;
+        width: 20vw;
+        height: 5vh;
+        padding: .5vw;
+        border: .1vw black solid;
+        border-radius: .3vw;
+    }
+
+    .inp:disabled{
+        background-color: #A5A2A0;
+    }
+
+    .inp::placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .inp::-moz-placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .form{
+        display: flex;
+        flex-direction: column;
+        row-gap: 3vh;
+        margin-top: 3vh;
+        min-width: 25vw;
+    }
+
+    .form__title{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.5rem;
+    }
+
+    .inp-wrapper{
+        display: flex;
+        flex-direction: column;
+        row-gap: 1vh;
+    }
+
+    .inp-wrapper label{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .error{
+        height: fit-content;
+        color: red;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+        margin-bottom: 3vh;
+    }
+
+    .order{
+        display: flex;
+        flex-direction: column;
+        row-gap: 1vh;
+        width: 30vw;
+        min-height: 20vh;
+        border: .1vw #333333 solid;
+        border-radius: .3vw;
+        padding: .5vw;
+        padding-bottom: 28vh;
+    }
+
+    .orders{
+        display: flex;
+        flex-direction: column;
+        row-gap: 3vh;
+    }
+
+    .order__title{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.5em;
+    }
+
+    .products{
+        display: flex;
+        flex-direction: column;
+        row-gap: .3vh;
+        width: 100%;
+        overflow-x: hidden;
+        min-height: 13.3vh;
+    }
+
+    .product__title, .product__price{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+    
+    .product__title{
+        width: 80%;
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .general-sum{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1em;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<script>
+    function editProfile(){
+        [].slice.call(document.getElementsByClassName("inp")).slice(1, [].slice.call(document.getElementsByClassName("inp")).length).forEach(element => {
+            console.log(element);
+            element.removeAttribute('disabled');
+        });
+        let btnSave = document.getElementById('edit');
+        btnSave.innerText = "Сохранить";
+        setTimeout(()=>{btnSave.setAttribute('type', 'submit');}, 100);
+    }
+
+    function logout(){
+        window.location.href = "{% url 'profile' %}?action=logout";
+    }
+</script>
+<div class="content">
+    <form action="" method="post" class="form">
+        <h1 class="content__title">Профиль</h1>
+        {% csrf_token %}
+        <h1 class="form__title">Личная информация</h1>
+        <div class="inp-wrapper">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="inp" value="{{ request.user.email }}" disabled>
+        </div>
+        <div class="inp-wrapper">
+            <label for="first_name">Имя</label>
+            <input type="text" id="first_name" name="first_name" class="inp" value="{{ request.user.first_name }}" disabled>
+        </div>
+        <div class="inp-wrapper">
+            <label for="last_name">Фамилия</label>
+            <input type="text" id="last_name" name="last_name" class="inp" value="{{ request.user.last_name }}" disabled>
+        </div>
+
+        <h1 class="form__title">Адрес</h1>
+        <div class="inp-wrapper">
+            <label for="last_name">Город</label>
+            <input type="text" id="last_name" name="city" class="inp" value="{{ request.user.city }}" disabled>
+        </div>
+        <div class="inp-wrapper">
+            <label for="last_name">Улица</label>
+            <input type="text" id="last_name" name="street" class="inp" value="{{ request.user.street }}" disabled>
+        </div>
+        <div class="inp-wrapper">
+            <label for="last_name">Дом/Квартира</label>
+            <input type="text" id="last_name" name="house" class="inp" value="{{ request.user.house }}" disabled>
+        </div>
+        <div style="display: flex;column-gap: 2vw;margin-bottom: 3vh;">
+            <button type="button" id="edit" onclick="editProfile()" class="header__button-login">Изменить</button>
+            <button type="button" onclick="logout()" class="header__button-login">Выйти</button>
+        </div>
+        <h2 class="error">{{ error }}</h2>
+    </form>
+    <div class="orders">
+        {% for order in orders %}
+            <div class="order">
+                <h1 class="order__title">Заказ №{{ order.id }}</h1>
+                <div class="products">
+                    {% for product in order.products %}
+                        <div style="display: flex;justify-content: space-between;">
+                            <h2 class="product__title">{{ product.name }}</h2>
+                            <h2 class="product__price">{{ product.count }}x{{ product.price }}р</h2>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div style="margin-bottom:2vh;">
+                    <h2 class="general-sum">Общая сумма заказа: {{ order.general_sum }}р</h2>
+                    <h2 class="general-sum">Статус: {{ order.status }}</h2>
+                    <a href="{% url 'order' id=order.id %}" class="general-sum">Просмотреть</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

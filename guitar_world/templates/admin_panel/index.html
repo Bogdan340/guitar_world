@@ -1,0 +1,84 @@
+{% extends '../layout_admin_panel.html' %}
+
+{% block title %}Админ панель{% endblock %}
+
+{% block styles %}
+    <style>
+        .text{
+            margin-top: 9vh;
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+        }
+        
+        .text-non-position{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+        }
+
+        .top-tabel{
+            padding-left: 5vw;
+            display: flex;
+            flex-direction: column;
+            row-gap: .6vh;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 5vh;">
+    <div class="diagrams">
+        <div style="width: 50vw;height: fit-content;display: flex;flex-direction: column;align-items: center;">
+            <h1 class="text">Топ по количеству продаж за неделю</h1>
+            <div id="top" style="width: 50vw;height: 50vw;"></div>
+        </div>
+        <div class="top-tabel">
+            {% for product in top_week_diagram %}
+            <h1 class="text-non-position">{{ product.id_top }}. {{ product.product.name }} (Количество: {{ product.count }})</h1>
+            {% endfor %}
+        </div>
+        <div style="width: 50vw;height: fit-content;display: flex;flex-direction: column;align-items: center;">
+            <h1 class="text">Топ по сумме заказа за неделю</h1>
+            <div id="top-summa" style="width: 50vw;height: 50vw;"></div>
+        </div>
+        <div class="top-tabel">
+            {% for product in top_week_diagram_summa %}
+            <h1 class="text-non-position">{{ product.id_top }}. {{ product.product.name }} (Общая сумма купленного товара: {{ product.summa }}р)</h1>
+            {% endfor %}
+        </div>
+    </div>
+    {% load static %}
+    <script src="{% static 'js/jsapi.js' %}"></script>
+    <script>
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Товары', 'Количество продаж за неделю'],
+                {% for product in top_week_diagram  %}
+                ['{{product.product.name}}', {{product.proc}}],
+                {% endfor %}
+            ]);
+            var options = {
+                title: '',
+                is3D: false,
+                pieResidueSliceLabel: 'Остальное'
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('top'));
+            chart.draw(data, options);
+            var data1 = google.visualization.arrayToDataTable([
+                ['Товары', 'Количество продаж за неделю'],
+                {% for product in top_week_diagram  %}
+                ['{{product.product.name}}', {{product.proc_summa}}],
+                {% endfor %}
+            ]);
+            var options1 = {
+                title: '',
+                is3D: false,
+                pieResidueSliceLabel: 'Остальное'
+            };
+            var chart1 = new google.visualization.PieChart(document.getElementById('top-summa'));
+            chart1.draw(data1, options1);
+        }
+    </script>
+</div>
+{% endblock %}

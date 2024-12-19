@@ -1,0 +1,27 @@
+{% extends '../layout.html' %}
+{% load static %}
+
+{% block title %}Потверждение почты{% endblock %}
+
+{% block styles %}
+<style>
+    .message{
+        color: black;
+        font-size: 5vw;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+    }
+    .message-div{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="message-div">
+    <h1 class="message">{{ message }}</h1>
+</div>
+{% endblock %}

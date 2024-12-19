@@ -1,0 +1,164 @@
+{% extends '../layout.html' %}
+{% load static %}
+
+{% block title %}Популярные гитары на это неделе{% endblock %}
+
+{% block styles %}
+<style>
+    .content{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 160%;
+        row-gap: 3vh;
+    }
+
+    .search-div{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        width: 72.5vw;
+        height: 58.1vh;
+        background-image: url("{% static 'img/bg-search.png' %}");
+        background-size: cover;
+        background-position-y: 70%;
+        border-radius: 1vw;
+        row-gap: 2vh;
+        padding-bottom: 5vh;
+    }
+
+    .search-div__title{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 3.5rem;
+        color: #FFFFFF;
+        text-align: center;
+        padding: 3.5vh 0 0 0;
+    }
+
+    .search-input{
+        width: 100%;
+    }
+
+    .search-input__input{
+        width: 40%;
+        height: 4.48vh;
+        border-radius: .4vw;
+        border: .1vw solid #E5E8EB;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.2rem;
+        padding: 3vh 1vw 3vh 1vw;
+        outline: 0;
+        margin-left: 11.8vw;
+    }
+
+    .search-div__button-search{
+        position: relative;
+        left: -10%;
+        border: none;
+        outline: 0;
+        border-radius: .3vw;
+        background-color: #FCEB3B;
+        width: 6vw;
+        height: 4vh;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.5rem;
+        transition: .3s;
+    }
+
+    .search-div__button-search:hover{
+        color: #FCEB3B;
+        background-color: black;
+        transition: .3s;
+    }
+
+    .products{
+        display: inline-flex;
+        flex-wrap: wrap;
+        row-gap: 3vh;
+        width: 70vw;
+        min-height: 75vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        column-gap: 5vw;
+        padding-top: 5vh;
+        margin-bottom: 3vh;
+    }
+
+    .product-card{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        row-gap: 2vh;
+        border: .1vw #333333 solid;
+        width: 20vw;
+        height: 80vh;
+        border-radius: .5vw;
+    }
+
+    .product-card__wrapper-image{
+        width: 15vw;
+        height: 45vh;
+        background-size: cover;
+        background-position-y: bottom;
+        border-radius: .5vw;
+    }
+
+    .product-card__name-product{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.25rem;
+        margin-bottom: 1vh;
+        text-wrap: nowrap;
+        width: 100%;
+        padding-left: 1vw;
+        padding-right: 1vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .product-card__price{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="search-div">
+        <h1 class="search-div__title">Самые популярные гитары недели</h1>
+        <div class="search-input">
+            <form action="{% url 'catalog' %}" method="get">
+                <input type="hidden" value="all" name="category">
+                <input type="text" placeholder="Поиск" name="search" class="search-input__input">
+                <button class="search-div__button-search" type="submit">Поиск</button>
+            </form>
+        </div>
+    </div>
+    <div style="display: flex;column-gap: 3vw;">
+        {% for product in products %}
+            <div class="product-card">
+                <div class="product-card__wrapper-image" style="background-image: url('/media/{{ product.product.image }}');">
+                </div>
+                <h1 class="product-card__name-product">{{ product.product.name }}</h1>
+                <div style="width: 100%;padding-left: 1vw;">
+                    <h1 class="product-card__price">{{ product.product.price }}р</h1>
+                </div>
+                <button onclick="location.href = '{% url 'product_detail' id=product.product.id %}'" class="header__button-login" style="width: fit-content;height: fit-content;padding: .5vw;">Посмотреть подробнее</button>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

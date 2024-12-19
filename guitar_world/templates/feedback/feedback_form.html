@@ -1,0 +1,98 @@
+{% extends '../layout.html' %}
+{% load static %}
+
+{% block title %}Форма обратной связи{% endblock %}
+
+{% block styles %}
+<style>
+    .inp{
+        outline: 0;
+        border: 0;
+        background-color: #F5F2F0;
+        width: 20vw;
+        height: 5vh;
+        padding: .5vw;
+        border: .1vw black solid;
+        border-radius: .3vw;
+    }
+
+    .inp:disabled{
+        background-color: #A5A2A0;
+    }
+
+    .inp::placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .inp::-moz-placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .form{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 4vh;
+        padding-top: 6vh;
+    }
+    .form h1{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .div-form{
+        display: flex;
+        flex-direction: column;
+        row-gap: 3vh;
+    }
+
+    .wrapper-input{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .wrapper-input label{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.5rem;
+        width: fit-content;
+    }
+    .textarea{
+        width: 50vw;
+        height: 30vh;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <form method="POST" class="form">
+        {% csrf_token %}
+        <h1>Форма обратной связи</h1>
+        <div class="div-form">
+            <div class="wrapper-input">
+                <label for="email">Email</label>
+                {{ form.email }}
+            </div>
+            <div class="wrapper-input">
+                <label for="question">Вопрос</label>
+                {{ form.question }}
+            </div>
+        </div>
+        <button class="header__button-login" style="width: fit-content;padding: .3vw;">Отправить вопрос</button>
+        <h3 style="font-family: 'Roboto', sans-serif;">{{ error }}</h3>
+    </form>
+{% endblock %}

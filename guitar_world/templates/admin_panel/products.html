@@ -1,0 +1,30 @@
+{% extends '../layout_admin_panel.html' %}
+
+{% block title %}Товары{% endblock %}
+
+{% block styles %}
+    <style>
+        .content{
+            display: flex;
+            flex-direction: column;
+            row-gap: 3vh;
+            padding-top: 8vh;
+            padding-left: 10vw;
+        }
+        .text{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 class="text">Товары <a href="{% url 'product_create' %}">Создать товар</a></h1>
+    <nav style="display: flex;flex-direction: column;row-gap: 2vh;">
+        {% for product in products %}
+            <h3 class="text">{{ product.name }} (<a href="{% url 'product_detail' id=product.id %}">Просмотреть</a> <a href="{% url 'product_update' id=product.id %}">Редактировать</a> <a href="{% url 'product_delete' id=product.id %}">Удалить</a>)</h3>
+        {% endfor %}
+    </nav>
+</div>
+{% endblock %}

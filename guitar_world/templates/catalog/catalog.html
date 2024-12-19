@@ -1,0 +1,106 @@
+{% extends '../layout.html' %}
+{% load static %}
+
+{% block title %}Каталог{% endblock %}
+
+{% block styles %}
+<style>
+    .message{
+        color: black;
+        font-size: 5vw;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+    }
+    .message-div{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn{
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        width: fit-content;
+        height: fit-content;
+        padding: .5vw;
+        font-weight: 400;
+        font-size: 1.2rem;
+        color: #000000;
+        background-color: #FCEB3B;
+        border-radius: .4vw;
+        border: none;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    .btn:hover{
+        background-color: #000000;
+        color: #FCEB3B;
+        transition: .3s;
+    }
+    .categories__item{
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        row-gap: 2vh;
+        transition: .5s;
+        border-radius: .6vw;
+        padding-top: 1vh;
+        border: .2vw transparent solid;
+        transition: .3s;
+    }
+    .categories__item:hover{
+        border: .2vw #FCEB3B solid;
+        transition: .3s;
+    }
+    .categories__item img{
+        width: 25vw;
+        height: 25vw;
+        border-radius: .6vw;
+    }
+    .categories__title{
+        color: black;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-size: 1.5rem;
+        width: fit-content;
+        margin-left: 1vw;
+    }
+    .categories{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 3vw;
+        height: 75vh;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<script>
+    function category(categor){
+        location.href = "{% url 'catalog' %}?category="+categor;
+    }
+</script>
+<div>
+    <div class="categories">
+        <div class="categories__item" onclick="category('electric')">
+            <img src="{% static 'img/electricguitar.jpg' %}" alt="">
+            <h1 class="categories__title">Электрогитары</h1>
+        </div>
+        <div class="categories__item" onclick="category('classical')">
+            <img src="{% static 'img/clasicguitar.jpg' %}" alt="">
+            <h1 class="categories__title">Класические гитары</h1>
+        </div>
+        <div class="categories__item" onclick="category('acoustic')">
+            <img src="{% static 'img/acusticguitar.jpg' %}" alt="">
+            <h1 class="categories__title">Акустические гитары</h1>
+        </div>
+    </div>
+    <button class="btn" onclick="category('all')">Смотреть все гитары</button>
+</div>
+{% endblock %}

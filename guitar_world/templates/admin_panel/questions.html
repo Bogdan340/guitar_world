@@ -1,0 +1,73 @@
+{% extends '../layout_admin_panel.html' %}
+
+{% block title %}Вопросы от пользователей{% endblock %}
+
+{% block styles %}
+    <style>
+        .content{
+            display: flex;
+            flex-direction: column;
+            padding-top: 8vh;
+            padding-left: 10vw;
+        }
+        .text{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+        }
+
+        .input-wrapper{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-wrapper label{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-size: 1.5rem;
+        }
+
+        .form{
+            display: flex;
+            flex-direction: column;
+            row-gap: 3vh;
+        }
+
+        .inp{
+            outline: 0;
+            border: 0;
+            background-color: #F5F2F0;
+            width: 20vw;
+            height: 5vh;
+            padding: .5vw;
+            border: .1vw black solid;
+            border-radius: .3vw;
+        }
+
+        .inp:disabled{
+            background-color: #A5A2A0;
+        }
+
+        .inp::placeholder{
+            color: #8A7361;
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 class="text">Вопросы</h1>
+    <div style="display: flex;flex-direction: column;padding-top: 3vh">
+        {% for quest in questions %}
+            {% if quest.answer %}
+                <a href="{% url 'quest' id=quest.id %}" class="header__link">Вопрос №{{ quest.id }} (От пользователя c email {{ quest.email }}, Ответ дан)</a>
+            {% else %}
+                <a href="{% url 'quest' id=quest.id %}" class="header__link">Вопрос №{{ quest.id }} (От пользователя c email {{ quest.email }}, Ответ не дан)</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

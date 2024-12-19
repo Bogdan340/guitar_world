@@ -1,0 +1,151 @@
+{% extends '../layout.html' %}
+
+{% block title %}Чат подержки{% endblock %}
+
+{% block styles %}
+    <style>
+        .title-text{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-size: 2rem;
+        }
+        .description-text{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-size: 1.2rem;
+            color: #000000;
+        }
+    .inp{
+        outline: 0;
+        border: 0;
+        background-color: #F5F2F0;
+        width: 20vw;
+        height: 5vh;
+        padding: .5vw;
+        border: .1vw black solid;
+        border-radius: .3vw;
+    }
+
+    .inp:disabled{
+        background-color: #A5A2A0;
+    }
+
+    .inp::placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .inp::-moz-placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .content{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 3vh;
+    }
+
+    .messages{
+        display: flex;
+        flex-direction: column;
+        row-gap: 1vh;
+        height: 65vh;
+        padding-top: 3vh;
+        overflow-y: scroll;
+    }
+
+    .message{
+        display: flex;
+        width:100%;
+        align-items: center;
+    }
+
+    .message p{
+        display: block;
+        border-radius: .3vw;
+        padding: .3vw;
+        max-width: 30vw;
+        width: fit-content;
+        height: fit-content;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .my{
+        border: .15vw #FCEB3B solid;
+    }
+
+    .other{
+        border: .15vw #888888 solid;
+    }
+
+    .my-parent-div{
+        justify-content: flex-end;
+    }
+
+    .chat{
+        width: fit-content;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="chat">
+            <div>
+                <h1 class="title-text">Чат поддержки</h1>
+                <p class="description-text">Вы можете задать свой вопрос и получить ответ от нашего оператора.</p>
+            </div>
+            <div>
+                <div class="messages">
+                    {% for message in chat.messages %}
+                    <div class="message {{ message.classParentDiv }}">
+                        <p class="{{ message.classText }}">
+                            {{ message.text }}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div style="display: flex;column-gap: 2vw;">
+                    <input placeholder="Сообщение" style="width:30vw;" type="text" id="message" class="inp">
+                    <button onclick="sendMessage()" class="header__button-login">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const roomName = "{{ room_name }}";
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/client/' + roomName + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('.messages').innerHTML += ('<div class="message"><p class="other">' + data.message + '</p></div>');
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        function sendMessage(){
+            const input = document.getElementById("message");
+            chatSocket.send(JSON.stringify({
+                message: input.value
+            }))
+            document.querySelector('.messages').innerHTML += ('<div class="message my-parent-div"><p class="my">' + input.value + '</p></div>');
+            input.value = "";
+        }
+    </script>
+{% endblock %}

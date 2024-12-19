@@ -1,0 +1,89 @@
+{% extends '../layout_admin_panel.html' %}
+
+{% block title %}Товары{% endblock %}
+
+{% block styles %}
+    <style>
+        .content{
+            display: flex;
+            flex-direction: column;
+            padding-top: 8vh;
+            padding-left: 10vw;
+        }
+        .text{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+        }
+
+        .input-wrapper{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-wrapper label{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-size: 1.5rem;
+        }
+
+        .form{
+            display: flex;
+            flex-direction: column;
+            row-gap: 3vh;
+        }
+
+        .inp{
+            outline: 0;
+            border: 0;
+            background-color: #F5F2F0;
+            width: 20vw;
+            height: 5vh;
+            padding: .5vw;
+            border: .1vw black solid;
+            border-radius: .3vw;
+        }
+
+        .inp:disabled{
+            background-color: #A5A2A0;
+        }
+
+        .inp::placeholder{
+            color: #8A7361;
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <form method="post" class="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-wrapper">
+            <label for="name">Название товара</label>
+            {{ form.name }}
+        </div>
+        <div class="input-wrapper">
+            <label for="description">Описание</label>
+            {{ form.description }}
+        </div>
+        <div class="input-wrapper">
+            <label for="price">Цена</label>
+            {{ form.price }}
+        </div>
+        <div class="input-wrapper">
+            <label for="price">Категория</label>
+            {{ form.category }}
+        </div>
+        <div class="input-wrapper">
+            <label for="image">Картинка</label>
+            {{ form.image }}
+        </div>
+        <button class="header__button-login" style="margin-top: 3vh">Сохранить</button>
+        <h1 style="font-family: 'Roboto', sans-serif;font-style: normal;color:red;">{{ errors }}</h1>
+        <h1 style="font-family: 'Roboto', sans-serif;font-style: normal;color:black;margin-bottom: 3vh">{{ message }}</h1>
+    </form>
+</div>
+{% endblock %}

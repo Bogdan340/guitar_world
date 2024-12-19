@@ -1,0 +1,92 @@
+{% extends '../layout.html' %}
+{% load static %}
+
+{% block title %}Вход{% endblock %}
+
+{% block styles %}
+<style>
+    .inp{
+        outline: 0;
+        border: 0;
+        background-color: #F5F2F0;
+        width: 30vw;
+        height: 5vh;
+        padding: .5vw;
+        border: .1vw black solid;
+        border-radius: .3vw;
+    }
+
+    .inp::placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .inp::-moz-placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .wrapper-input{
+        display: flex;
+        flex-direction: column;
+        row-gap: 3vh;
+        padding-top: 9vh;
+        padding-left: 10vw;
+    }
+
+    .wrapper-input__welcome-text{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 3;
+        color: #000000;
+    }
+
+    .wrapper-input label{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.5rem;
+        color: #000000;
+    }
+
+    .form__link{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+        color: black;
+    }
+
+    .error{
+        height: fit-content;
+        color: red;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    <div class="wrapper-input">
+        <h1 class="wrapper-input__welcome-text">Добро пожаловать</h1>
+        <label for="email">Email</label>
+        {{form.email}}
+        <label for="password">Пароль</label>
+        {{form.password}}
+        <a href="{% url 'resetpassword' %}" class="form__link">Забыли пароль?</a>
+        <button type="submit" class="header__button-login" style="width: 20vw;height: 6vh;font-size: 1.7rem;border-radius: .8vw;">Войти</button>
+        <a href="{% url 'registration' %}" class="form__link">Нет аккаунта?</a>
+        <h2 class="error">{{ error }}</h2>
+    </div>
+</form>
+{% endblock %}

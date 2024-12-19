@@ -1,0 +1,29 @@
+{% extends '../layout_admin_panel.html' %}
+
+{% block title %}Заказы{% endblock %}
+
+{% block styles %}
+    <style>
+        .content{
+            display: flex;
+            flex-direction: column;
+            padding-top: 8vh;
+            padding-left: 10vw;
+        }
+        .text{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 class="text">Заказы</h1>
+    <nav style="display: flex;flex-direction: column;row-gap: 2vh;">
+        {% for order in orders %}
+        <a class="header__link" href="{% url 'order' id=order.id %}">Заказ №{{ order.id }} (Пользователя {{ order.user.email }})</a>
+        {% endfor %}
+    </nav>
+</div>
+{% endblock %}

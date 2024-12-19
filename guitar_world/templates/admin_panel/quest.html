@@ -1,0 +1,72 @@
+{% extends '../layout_admin_panel.html' %}
+
+{% block title %}Вопрос №{{ question.id }}{% endblock %}
+
+{% block styles %}
+    <style>
+        .content{
+            display: flex;
+            flex-direction: column;
+            padding-top: 8vh;
+            padding-left: 10vw;
+        }
+        .text{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+        }
+
+        .input-wrapper{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-wrapper label{
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-size: 1.5rem;
+        }
+
+        .form{
+            display: flex;
+            flex-direction: column;
+            row-gap: 3vh;
+        }
+
+        .inp{
+            outline: 0;
+            border: 0;
+            background-color: #F5F2F0;
+            width: 20vw;
+            height: 5vh;
+            padding: .5vw;
+            border: .1vw black solid;
+            border-radius: .3vw;
+        }
+
+        .inp:disabled{
+            background-color: #A5A2A0;
+        }
+
+        .inp::placeholder{
+            color: #8A7361;
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 class="text">Вопрос №{{ question.id }}</h1>
+    <h2 class="text">От пользователя с email: {{ question.email }}</h2>
+    <p class="text">Вопрос: "{{ question.question }}"</p>
+    <form method="post" style="display: flex;flex-direction: column;row-gap: 2vh">
+        {% csrf_token %}
+        <h2 class="text">Ответ</h2>
+        <textarea name="answer" class="inp" style="width: 30vw;height: 40vh">{{ question.answer }}</textarea>
+        <button class="header__button-login" style="width: fit-content;height: fit-content;padding: .6vw">Отправить ответ</button>
+    </form>
+</div>
+{% endblock %}

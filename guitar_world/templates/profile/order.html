@@ -1,0 +1,107 @@
+{% extends '../layout.html' %}
+{% block title %}Заказ №{{ order.id }}{% endblock %}
+
+{% block styles %}
+<style>
+    .content{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        row-gap: 2vh;
+        padding-left: 10vw;
+        padding-top: 8vh;
+    }
+
+    .products{
+        display: flex;
+        flex-direction: column;
+        row-gap: 2vh;
+    }
+
+    table{
+        border: .1vw #888888 solid;
+        width: 40vw;
+    }
+
+    .content h1{
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+    }
+
+    td, th{
+        text-align: center;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        border: .1vw #888888 solid;
+    }
+    .inp{
+        outline: 0;
+        border: 0;
+        background-color: #F5F2F0;
+        width: fit-content;
+        height: 5vh;
+        padding: .5vw;
+        border: .1vw black solid;
+        border-radius: .3vw;
+    }
+
+    .inp::placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    .inp::-moz-placeholder{
+        color: #8A7361;
+        font-family: 'Roboto', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <h1>Заказ №{{ order.id }}</h1>
+        <div class="products">
+            <table>
+                <tr>
+                    <th>Название</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                </tr>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.count }}</td>
+                    <td>{{ product.price }} руб.</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2">Итого:</td>
+                    <td>{{ total_price }} руб.</td>
+                </tr>
+            </table>
+            <form action="" method="post">
+                <div style="display: flex">
+                    {% csrf_token %}
+                    {% if request.user.is_staff %}
+                    <h1 style="font-size: 1.5rem;">Статус: </h1>
+                    <select class="inp" name="status">
+                        <option value="registration">Оформление заказа</option>
+                        <option value="dedlivery">Доставка заказа</option>
+                        <option value="done">Заказ выполнен</option>
+                    </select>
+                    {% else %}
+                    <h1 style="font-size: 1.5rem;">Статус: {{ order.status }}</h1>
+                    {% endif %}
+                </div>
+                <h1 style="font-size: 1.5rem;">Доставка по адресу: г.{{ request.user.city }}, ул.{{ request.user.street }} {{  request.user.house }}</h1>
+                <button class="header__button-login">Сохранить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
